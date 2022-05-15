@@ -4,7 +4,8 @@
 echo $imageName #getting Image name from env variable
 
 docker run --rm -v $WORKSPACE:/root/.cache/ aquasec/trivy:0.17.2 -q image --exit-code 0 --severity LOW,MEDIUM,HIGH --light $imageName
-docker run --rm -v $WORKSPACE:/root/.cache/ aquasec/trivy:0.17.2 -q image --exit-code 1 --severity CRITICAL --light $imageName
+# We are just skiping this. If you also want to check if image has CRITICAL vulnerability & fail build if it exist
+#docker run --rm -v $WORKSPACE:/root/.cache/ aquasec/trivy:0.17.2 -q image --exit-code 1 --severity CRITICAL --light $imageName
 
     # Trivy scan result processing
     exit_code=$?

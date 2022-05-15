@@ -5,7 +5,7 @@ pipeline {
     containerName = "devsecops-container"
     serviceName = "devsecops-svc"
     imageName = "hrsikesa/numeric-app:${GIT_COMMIT}"
-    applicationURL = "http://192.168.1.11/"
+    applicationURL = "http://192.168.1.11"
     applicationURI = "/increment/99"
   }
   stages {
@@ -105,6 +105,23 @@ pipeline {
         }
       }
     }
+stage('Integration Tests - DEV') {
+      steps {
+        script {
+          try {
+            withKubeConfig([credentialsId: 'kubeconfig']) {
+              sh "bash integration-test.sh"
+            }
+          } catch (e) {
+            withKubeConfig([credentialsId: 'kubeconfig']) {
+              sh "kubectl -n default rollout undo deploy ${deploymentName}"
+            }
+            throw e
+          }
+        }
+      }
+    }
+
   }
     post {
     always {

@@ -7,7 +7,7 @@ pipeline {
     containerName = "devsecops-container"
     serviceName = "devsecops-svc"
     imageName = "hrsikesa/numeric-app:${GIT_COMMIT}"
-    applicationURL = "http://192.168.1.2"
+    applicationURL = "http://192.168.8.2"
     applicationURI = "/increment/99"
   }
   stages {
@@ -34,7 +34,7 @@ pipeline {
     stage('SonarQube - SAST') {
       steps {
         withSonarQubeEnv('SonarQube') {
-          sh "mvn sonar:sonar -Dsonar.projectKey=numeric-application -Dsonar.host.url=http://192.168.1.2:9000"
+          sh "mvn sonar:sonar -Dsonar.projectKey=numeric-application -Dsonar.host.url=http://192.168.1.8:9000"
         }
         timeout(time: 2, unit: 'MINUTES') {
           script {
